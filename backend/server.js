@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from 'dotenv';
 dotenv.config();
 import workoutRoutes from "./routes/workouts.js";
+import userRoutes from "./routes/user.js";
 import mongoose from "mongoose";
 
 
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 4000;
 
 // routes
 app.use('/api/workouts', workoutRoutes);
+app.use('/api/users', userRoutes);
 
 // connect to DB- async in nature as takes bit of a time to do
 mongoose.connect("mongodb://localhost:27017/")
