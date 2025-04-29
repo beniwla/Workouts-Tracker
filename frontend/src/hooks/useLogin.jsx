@@ -10,7 +10,7 @@ export const useLogin= ()=>{
         setIsLoading(true)
         setError(null)
 
-        const res= await fetch('/api/users/login',{
+        const res= await fetch('${process.env.REACT_APP_BACKEND_URL}/api/users/login',{
             method: 'POST',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({email,password})

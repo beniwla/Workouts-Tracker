@@ -15,7 +15,7 @@ app.use(express.json());
 app.use((req,res,next)=>{
     console.log(req.path, req.method);
     next();
-})
+}) 
 
 const PORT = process.env.PORT || 4000;
 
@@ -24,7 +24,7 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/users', userRoutes);
 
 // connect to DB- async in nature as takes bit of a time to do
-mongoose.connect("mongodb://localhost:27017/")
+mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
 
     // listen for requests

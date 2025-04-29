@@ -14,7 +14,7 @@ const WorkoutDetails = ({workout}) => {
       return
     }
 
-    const res= await fetch('/api/workouts/' + workout._id , {
+    const res= await fetch('${process.env.REACT_APP_BACKEND_URL}/api/workouts/' + workout._id , {
       method: 'DELETE',
       headers:{
         'Authorization': `Bearer ${user.token}`

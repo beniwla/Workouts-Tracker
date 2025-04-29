@@ -1,0 +1,53 @@
+# Set the docker-compose version
+# version: '3.8'
+
+# Define all the services (containers) we need
+services:
+  
+  # Backend Service (Express + Node.js)
+  backend:
+    build: 
+      context: ./backend    # Path to backend folder (where your backend Dockerfile is present)
+    ports:
+      - '4000:4000'          # Map container's port 4000 to localhost's port 4000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mern-app   # Important: Backend talks to Mongo service (inside docker)
+      - PORT=4000           # Backend server port (Express app)
+      - SECRET=fufuvkvytfyfuvvfju87878   # JWT secret key
+    depends_on:
+      - mongo               # Backend container starts only after Mongo container is ready
+    networks:
+      - mern-network        # Attach backend to a custom network for internal communication
+
+  # Frontend Service (React.js)
+  frontend:
+    build:
+      context: ./frontend   # Path to frontend folder (where your frontend Dockerfile is present)
+    ports:
+      - '3000:3000'          # Map container's port 3000 to localhost's port 3000
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:4000  # React will call backend API using backend service name
+    depends_on:
+      - backend              # Frontend starts after backend is up
+    networks:
+      - mern-network
+
+  # MongoDB Service (Database)
+  mongo:
+    image: mongo             # Use the official MongoDB Docker image
+    container_name: mongo-container
+    ports:
+      - '27017:27017'         # Map MongoDB's default port to your local machine
+    volumes:
+      - mongo-data:/data/db   # Mount a docker volume to persist MongoDB data even if container stops
+    networks:
+      - mern-network
+
+# Define Volumes (for persisting database data)
+volumes:
+  mongo-data:                # A named volume (stored outside the container for MongoDB)
+
+# Define custom network (for all services to communicate internally)
+networks:
+  mern-network:               # A custom bridge network created by Docker Compose
+

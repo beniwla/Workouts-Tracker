@@ -5,7 +5,7 @@ import { loginUser, signupUser, getallUsers } from "../controllers/userControlle
 // instance of express router
 const router= express.Router();
 
-//get all users
+//get all users 
 router.get('/', getallUsers)
 
 // login route
